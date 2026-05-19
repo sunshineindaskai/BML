@@ -88,68 +88,84 @@ if (yr) yr.textContent = new Date().getFullYear();
    SERVICE CAROUSEL
    ═══════════════════════════════════════════════════════════════════════════ */
 (function initCarousel() {
-  const carousel  = document.getElementById('svcCarousel');
-  const prevBtn   = document.getElementById('svcPrev');
-  const nextBtn   = document.getElementById('svcNext');
-  const progress  = document.getElementById('svcProgressBar');
-  if (!carousel) return;
+  const outer = document.getElementById('svcOuter');
+  const track = document.getElementById('svcTrack');
+  if (!outer || !track) return;
 
-  const cards     = carousel.querySelectorAll('.svc-card');
-  const cardCount = cards.length;
+  /* ── Clone originals only (guard against double-cloning on edge cases) ── */
+  const origCards = Array.from(track.querySelectorAll('.svc-card:not([aria-hidden])'));
+  origCards.forEach(card => {
+    const clone = card.cloneNode(true);
+    clone.setAttribute('aria-hidden', 'true');
+    clone.setAttribute('tabindex', '-1');
+    track.appendChild(clone);
+  });
 
-  /* Update progress bar */
-  function updateProgress() {
-    const max  = carousel.scrollWidth - carousel.clientWidth;
-    const pct  = max > 0 ? carousel.scrollLeft / max : 0;
-    const segW = 100 / cardCount;
-    if (progress) progress.style.width = (segW + pct * (100 - segW)) + '%';
-  }
+  /* ── Skip animation: reduced-motion or touch/mobile ── */
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const isTouch        = window.matchMedia('(pointer: coarse)').matches;
+  if (prefersReduced || isTouch) return;
 
-  /* Scroll to card index */
-  function scrollToCard(index) {
-    const target = cards[Math.max(0, Math.min(index, cardCount - 1))];
-    if (target) {
-      carousel.scrollTo({ left: target.offsetLeft - parseInt(getComputedStyle(carousel).paddingLeft || '0'), behavior: 'smooth' });
+  /* ── Speed constants (px per frame @ 60 fps)
+     BASE 0.6 = ~36 px/s  → premium but visibly alive
+     FAST 2.2× = ~79 px/s → brisk right-zone scroll
+     BACK 1.7× = ~61 px/s → confident left-zone reverse  ── */
+  const BASE  = 0.6;
+  const FAST  = BASE * 2.2;
+  const BACK  = -(BASE * 1.7);
+
+  let pos          = 0;
+  let speed        = BASE;
+  let targetSpeed  = BASE;
+  let hoveringCard = false;
+  let hoverZone    = null; // 'left' | 'right' | null
+  let raf;
+
+  /* ── Card hover → pause ── */
+  track.querySelectorAll('.svc-card').forEach(card => {
+    card.addEventListener('mouseenter', () => { hoveringCard = true; });
+    card.addEventListener('mouseleave', () => { hoveringCard = false; });
+  });
+
+  /* ── Mouse position → hover zone ── */
+  outer.addEventListener('mousemove', e => {
+    if (hoveringCard) { hoverZone = null; return; }
+    const x = e.clientX - outer.getBoundingClientRect().left;
+    const w = outer.offsetWidth;
+    if      (x < w * 0.20) hoverZone = 'left';
+    else if (x > w * 0.80) hoverZone = 'right';
+    else                    hoverZone = null;
+  });
+  outer.addEventListener('mouseleave', () => { hoverZone = null; });
+
+  /* ── rAF loop ── */
+  function tick() {
+    if (hoveringCard) {
+      targetSpeed = 0;
+    } else if (hoverZone === 'left') {
+      targetSpeed = BACK;
+    } else if (hoverZone === 'right') {
+      targetSpeed = FAST;
+    } else {
+      targetSpeed = BASE;
     }
+
+    /* Smooth easing — 0.055 gives a ~0.25 s half-life, feels deliberate not snappy */
+    speed += (targetSpeed - speed) * 0.055;
+    if (Math.abs(speed) < 0.004) speed = 0;
+
+    pos += speed;
+
+    /* Infinite loop: reset when one full set has scrolled past */
+    const half = track.scrollWidth / 2;
+    if (pos >= half) pos -= half;
+    if (pos < 0)     pos += half;
+
+    track.style.transform = `translateX(${-pos}px)`;
+    raf = requestAnimationFrame(tick);
   }
 
-  /* Find current visible card index */
-  function currentIndex() {
-    const mid = carousel.scrollLeft + carousel.clientWidth / 2;
-    let closest = 0, minDist = Infinity;
-    cards.forEach((c, i) => {
-      const dist = Math.abs(c.offsetLeft + c.offsetWidth / 2 - mid);
-      if (dist < minDist) { minDist = dist; closest = i; }
-    });
-    return closest;
-  }
-
-  if (prevBtn) prevBtn.addEventListener('click', () => scrollToCard(currentIndex() - 1));
-  if (nextBtn) nextBtn.addEventListener('click', () => scrollToCard(currentIndex() + 1));
-
-  carousel.addEventListener('scroll', updateProgress, { passive: true });
-  updateProgress();
-
-  /* Mouse drag-to-scroll */
-  let isDown = false, startX = 0, scrollLeft = 0;
-  carousel.addEventListener('mousedown', e => {
-    isDown     = true;
-    startX     = e.pageX - carousel.offsetLeft;
-    scrollLeft = carousel.scrollLeft;
-    carousel.style.userSelect = 'none';
-  });
-  window.addEventListener('mouseup', () => {
-    isDown = false;
-    carousel.style.userSelect = '';
-  });
-  carousel.addEventListener('mousemove', e => {
-    if (!isDown) return;
-    e.preventDefault();
-    const x    = e.pageX - carousel.offsetLeft;
-    const walk = (x - startX) * 1.5;
-    carousel.scrollLeft = scrollLeft - walk;
-  });
-  carousel.addEventListener('mouseleave', () => { isDown = false; carousel.style.userSelect = ''; });
+  raf = requestAnimationFrame(tick);
 })();
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -313,10 +329,13 @@ function runGSAP() {
       { opacity:1, y:0, duration:0.7, stagger:0.12,
         scrollTrigger: { trigger: '.services', start: 'top 78%', once: true } }
     );
-    gsap.fromTo('.svc-card',
+    /* Clones added by initCarousel should always be visible */
+    gsap.set('.svc-card[aria-hidden="true"]', { opacity:1, y:0 });
+    /* Reveal only the original (non-clone) cards */
+    gsap.fromTo('.svc-card:not([aria-hidden])',
       { opacity:0, y:40 },
       { opacity:1, y:0, duration:0.6, stagger:0.08, ease:'power3.out',
-        scrollTrigger: { trigger: '.svc-carousel', start: 'top 82%', once: true } }
+        scrollTrigger: { trigger: '#svcOuter', start: 'top 82%', once: true } }
     );
     gsap.fromTo('.services__foot',
       { opacity:0, y:20 },
@@ -368,15 +387,10 @@ function runGSAP() {
 
   /* ── 8. Final CTA ───────────────────────────────────────────────────── */
   if (!prefersReduced) {
-    gsap.fromTo('.cta-final__label, .cta-final__headline, .cta-final__sub, .cta-final__actions',
+    gsap.fromTo('.cta-final__label, .cta-final__headline, .cta-final__sub, .cta-final__btn',
       { opacity:0, y:30 },
-      { opacity:1, y:0, duration:0.7, stagger:0.1, ease:'power3.out',
-        scrollTrigger: { trigger: '.cta-final', start: 'top 78%', once: true } }
-    );
-    gsap.fromTo('.cta-final__contact-label, .contact-item',
-      { opacity:0, y:20 },
-      { opacity:1, y:0, duration:0.55, stagger:0.08,
-        scrollTrigger: { trigger: '.cta-final__contact', start: 'top 82%', once: true } }
+      { opacity:1, y:0, duration:0.7, stagger:0.12, ease:'power3.out',
+        scrollTrigger: { trigger: '.cta-final', start: 'top 80%', once: true } }
     );
   }
 

@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css?v=3" />
 </head>
 <body>
 
@@ -195,9 +195,10 @@
         </p>
       </div>
 
-      <!-- Full-width carousel -->
-      <div class="svc-carousel-outer">
-        <div class="svc-carousel" id="svcCarousel" role="list">
+      <!-- Full-width infinite carousel -->
+      <div class="svc-carousel-outer" id="svcOuter">
+        <div class="svc-carousel" id="svcCarousel" role="region" aria-label="Our services">
+          <div class="svc-track" id="svcTrack">
 
           <article class="svc-card" role="listitem" tabindex="0">
             <div class="svc-card__num" aria-hidden="true">01</div>
@@ -259,27 +260,12 @@
             <div class="svc-card__cta" aria-hidden="true">Learn more →</div>
           </article>
 
+          </div><!-- /.svc-track -->
         </div><!-- /.svc-carousel -->
 
       </div><!-- /.svc-carousel-outer -->
 
-      <!-- Arrow row lives inside container, below carousel -->
       <div class="container">
-        <div class="svc-controls">
-          <button class="svc-arrow svc-arrow--prev" id="svcPrev" aria-label="Previous service">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
-          </button>
-          <button class="svc-arrow svc-arrow--next" id="svcNext" aria-label="Next service">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-          </button>
-        </div>
-      </div>
-
-      <!-- Progress track -->
-      <div class="container">
-        <div class="svc-progress-wrap" aria-hidden="true">
-          <div class="svc-progress-bar" id="svcProgressBar"></div>
-        </div>
         <div class="services__foot">
           <a href="https://calendly.com/businessmindsetjm/consultation"
              target="_blank" rel="noopener noreferrer"
@@ -430,73 +416,23 @@
     </section>
 
     <!-- ── FINAL CTA / CONTACT ───────────────────────────────────────────────────── -->
-    <section class="cta-final" id="contact" aria-label="Contact BML">
+    <section class="cta-final" id="contact" aria-label="Get Started">
       <div class="cta-final__bg" aria-hidden="true">
         <div class="cta-final__glow"></div>
         <div class="cta-final__grid"></div>
       </div>
       <div class="container cta-final__inner">
-
-        <div class="cta-final__copy">
-          <p class="section__label cta-final__label">Get Started</p>
-          <h2 class="cta-final__headline">
-            Ready to move your<br><em>business forward?</em>
-          </h2>
-          <p class="cta-final__sub">
-            Start with a conversation about where your business is now —
-            and where it can go next.
-          </p>
-          <div class="cta-final__actions">
-            <a href="https://calendly.com/businessmindsetjm/consultation"
-               target="_blank" rel="noopener noreferrer"
-               class="btn btn--white btn--lg">Book a Consultation</a>
-            <a href="#services" class="btn btn--ghost-green btn--lg">Explore Services</a>
-          </div>
-        </div>
-
-        <!-- Contact details -->
-        <div class="cta-final__contact">
-          <p class="cta-final__contact-label">Or reach us directly</p>
-          <ul class="contact-list">
-            <li>
-              <a href="mailto:info@businessmindsetjm.com" class="contact-item">
-                <span class="contact-item__icon" aria-hidden="true">
-                  <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>
-                </span>
-                info@businessmindsetjm.com
-              </a>
-            </li>
-            <li>
-              <a href="tel:+18762339715" class="contact-item">
-                <span class="contact-item__icon" aria-hidden="true">
-                  <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/></svg>
-                </span>
-                +1 (876) 233-9715
-              </a>
-            </li>
-            <li>
-              <a href="https://www.instagram.com/businessmindsetjm"
-                 target="_blank" rel="noopener noreferrer"
-                 class="contact-item">
-                <span class="contact-item__icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
-                </span>
-                @businessmindsetjm
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/businessmindsetjm"
-                 target="_blank" rel="noopener noreferrer"
-                 class="contact-item">
-                <span class="contact-item__icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                </span>
-                @businessmindsetjm
-              </a>
-            </li>
-          </ul>
-        </div>
-
+        <p class="section__label cta-final__label">Get Started</p>
+        <h2 class="cta-final__headline">
+          Ready to move your<br><em>business forward?</em>
+        </h2>
+        <p class="cta-final__sub">
+          Start with a conversation about where your business is now —
+          and where it can go next.
+        </p>
+        <a href="https://calendly.com/businessmindsetjm/consultation"
+           target="_blank" rel="noopener noreferrer"
+           class="btn btn--primary btn--lg cta-final__btn">Let's Talk</a>
       </div>
     </section>
 
@@ -587,6 +523,6 @@
   <!-- GSAP + ScrollTrigger from CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script src="app.js"></script>
+  <script src="app.js?v=9"></script>
 </body>
 </html>

@@ -616,31 +616,49 @@ em       { font-style: italic; }
 }
 
 /* Carousel outer — edge-to-edge */
+/* ── Infinite auto-scroll carousel ── */
 .svc-carousel-outer {
   position: relative;
-  padding-inline: var(--gutter);
-  max-width: var(--max);
-  margin-inline: auto;
+  /* Clip horizontal overflow while allowing vertical hover glow */
+  overflow-x: clip;
+  overflow-y: visible;
+  padding-block: 1rem 2rem;
+  /* Soft edge fade */
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
 }
 
-/* Scrollable track */
+/* Semantic wrapper — white-space: nowrap ensures inline-flex track doesn't wrap to next line */
 .svc-carousel {
-  display: flex;
-  gap: 1.5rem;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  padding-block: 1rem 1.5rem;
-  cursor: grab;
+  white-space: nowrap;
+  overflow: visible;
 }
-.svc-carousel:active { cursor: grabbing; }
-.svc-carousel::-webkit-scrollbar { display: none; }
+
+/* Moving track — inline-flex so it sizes to its actual content width */
+.svc-track {
+  display: inline-flex;
+  gap: 1.5rem;
+  will-change: transform;
+  padding-inline: var(--gutter);
+  vertical-align: top;
+}
 
 /* Individual service card */
 .svc-card {
-  scroll-snap-align: start;
   flex: 0 0 clamp(280px, 30vw, 360px);
+  white-space: normal; /* override parent's nowrap */
   padding: 2.5rem 2.25rem;
   background: var(--glass-light);
   border: 1px solid var(--b-dim);
@@ -718,51 +736,22 @@ em       { font-style: italic; }
 }
 .svc-card:hover .svc-card__cta { opacity: 1; transform: translateY(0); color: var(--g-400); }
 
-/* Carousel arrows */
-.svc-arrow {
-  display: flex; align-items: center; justify-content: center;
-  width: 3rem; height: 3rem;
-  background: var(--glass-light);
-  border: 1px solid var(--b-dim);
-  border-radius: 50%;
-  color: var(--t-1);
-  transition: background var(--t-fast), border-color var(--t-fast), transform var(--t-fast), color var(--t-fast);
-  margin-top: 0.5rem;
-}
-.svc-arrow:hover {
-  background: var(--glass-green);
-  border-color: rgba(42,179,134,.3);
-  color: var(--g-300);
-  transform: scale(1.08);
-}
-.svc-arrow--prev, .svc-arrow--next { margin-right: 0.75rem; }
-.svc-arrow svg { width: 18px; height: 18px; }
-
-/* Progress bar */
-.svc-progress-wrap {
-  height: 2px;
-  background: rgba(255,255,255,0.07);
-  border-radius: 100px;
-  overflow: hidden;
-  margin-top: 1.5rem;
-  margin-bottom: 2.5rem;
-  max-width: 200px;
-}
-.svc-progress-bar {
-  height: 100%;
-  background: linear-gradient(90deg, var(--g-600), var(--g-400));
-  border-radius: 100px;
-  width: 16.67%; /* 1/6 cards */
-  transition: width 0.3s var(--ease);
-}
-
-/* Arrow control row */
-.svc-controls {
-  display: flex;
-  gap: 0.75rem;
-  align-items: center;
-  margin-top: 1.25rem;
-  margin-bottom: 0.5rem;
+/* Mobile: natural touch-scroll fallback */
+@media (max-width: 767px) {
+  .svc-carousel-outer {
+    overflow-x: auto;
+    overflow-y: visible;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    mask-image: none;
+    -webkit-mask-image: none;
+  }
+  .svc-carousel-outer::-webkit-scrollbar { display: none; }
+  .svc-track {
+    transform: none !important;
+  }
+  /* Hide clones added by JS */
+  .svc-card[aria-hidden="true"] { display: none; }
 }
 
 .services__foot {
@@ -896,13 +885,12 @@ em       { font-style: italic; }
 
 .cta-final__inner {
   position: relative; z-index: 1;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 3.5rem;
-  align-items: start;
-}
-@media (min-width: 860px) {
-  .cta-final__inner { grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 600px;
+  margin-inline: auto;
 }
 
 .cta-final__label { color: var(--g-300); }
@@ -922,19 +910,12 @@ em       { font-style: italic; }
   margin-bottom: 2.25rem; line-height: 1.75;
 }
 
-.cta-final__actions { display: flex; flex-wrap: wrap; gap: 1rem; }
-
-/* Contact details column */
-.cta-final__contact { }
-.cta-final__contact-label {
-  font-size: 0.75rem; font-weight: 600;
-  letter-spacing: 0.14em; text-transform: uppercase;
-  color: var(--g-400); margin-bottom: 1.5rem;
-  display: flex; align-items: center; gap: 0.625rem;
+/* Single CTA button */
+.cta-final__btn {
+  margin-top: 0.5rem;
 }
-.cta-final__contact-label::before {
-  content: ''; display: block; width: 1.5rem; height: 1px;
-  background: var(--g-500); flex-shrink: 0;
+.cta-final__btn:hover {
+  box-shadow: 0 0 28px rgba(42,179,134,0.35), 0 0 60px rgba(42,179,134,0.12);
 }
 
 .contact-list { display: flex; flex-direction: column; gap: 1rem; }
@@ -1010,9 +991,7 @@ em       { font-style: italic; }
 @media (max-width: 479px) {
   .hero__actions { flex-direction: column; }
   .hero__actions .btn { width: 100%; justify-content: center; }
-  .cta-final__actions { flex-direction: column; align-items: stretch; }
-  .cta-final__actions .btn { width: 100%; }
+  .cta-final__btn { width: 100%; justify-content: center; }
   .services__foot { flex-direction: column; align-items: stretch; }
   .services__foot .btn { width: 100%; justify-content: center; }
-  .svc-carousel { padding-inline: 0; }
 }
