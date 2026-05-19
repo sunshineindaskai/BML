@@ -510,6 +510,104 @@ em       { font-style: italic; }
 @keyframes orb-float { from{transform:translateY(0) rotate(0deg)} to{transform:translateY(-18px) rotate(3deg)} }
 
 /* ═══════════════════════════════════════════════════════════════════════════
+   HERO WORD CLOUD
+   ═══════════════════════════════════════════════════════════════════════════ */
+.word-cloud {
+  position: relative;
+  width: 100%;
+  height: clamp(500px, 58vh, 620px);
+  overflow: hidden;
+  border-radius: 1.25rem;
+}
+
+/* Base pill card */
+.word-tag {
+  position: absolute;
+  left: 0; top: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  border-radius: 100px;
+  pointer-events: auto;
+  cursor: default;
+  user-select: none;
+  will-change: transform;
+  transition: box-shadow 0.25s ease, border-color 0.25s ease;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  color: rgba(255,255,255,0.9);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.24), inset 0 1px 0 rgba(255,255,255,0.07);
+}
+.word-tag:hover {
+  box-shadow:
+    0 0 0 1px rgba(42,179,134,0.5),
+    0 0 24px rgba(42,179,134,0.28),
+    0 4px 24px rgba(0,0,0,0.24),
+    inset 0 1px 0 rgba(255,255,255,0.07);
+  border-color: rgba(42,179,134,0.5);
+}
+.word-tag--accent {
+  background: rgba(15,77,58,0.35);
+  border-color: rgba(42,179,134,0.28);
+}
+
+/* ── Size hierarchy ─────────────────────────────────────────── */
+/* XL — "Your All-in-One Solution" — visual anchor */
+.word-tag--xl {
+  font-family: var(--serif);
+  font-size: 1.75rem;
+  font-weight: 700;
+  padding: 0.9rem 2.25rem;
+  letter-spacing: 0.01em;
+  background: linear-gradient(135deg, rgba(15,77,58,0.58) 0%, rgba(11,61,46,0.42) 100%);
+  border: 1.5px solid rgba(42,179,134,0.52);
+  color: #fff;
+  box-shadow:
+    0 0 0 1px rgba(42,179,134,0.14),
+    0 0 44px rgba(42,179,134,0.22),
+    0 0 80px rgba(42,179,134,0.08),
+    0 12px 40px rgba(0,0,0,0.32),
+    inset 0 1px 0 rgba(255,255,255,0.12);
+}
+
+/* LG — Consulting, Accounting, Web Development, Marketing */
+.word-tag--lg {
+  font-size: 1.25rem;
+  padding: 0.65rem 1.625rem;
+}
+
+/* MD — POS Systems, Professional, Trusted, Tailored */
+.word-tag--md {
+  font-size: 0.9375rem;
+  padding: 0.5rem 1.25rem;
+}
+
+/* Reduced-motion: static pill cluster, no physics */
+@media (prefers-reduced-motion: reduce) {
+  .word-cloud {
+    display: flex !important;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    gap: 0.875rem;
+    padding: 1.75rem;
+    overflow: visible;
+    height: auto;
+  }
+  .word-tag {
+    position: static !important;
+    transform: none !important;
+    opacity: 1 !important;
+    will-change: auto;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
    BRAND POSITIONING / ABOUT
    ═══════════════════════════════════════════════════════════════════════════ */
 .about { padding-block: var(--sec-py); }

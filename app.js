@@ -169,6 +169,232 @@ if (yr) yr.textContent = new Date().getFullYear();
 })();
 
 /* ═══════════════════════════════════════════════════════════════════════════
+   HERO WORD CLOUD  (Matter.js physics)
+   ═══════════════════════════════════════════════════════════════════════════ */
+(function initWordCloud() {
+  const container = document.getElementById('wordCloud');
+  if (!container) return;
+
+  /* Only run on non-touch, non-small-screen contexts */
+  if (window.matchMedia('(pointer: coarse)').matches)  return;
+  if (window.matchMedia('(max-width: 959px)').matches) return;
+
+  const isReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const WORDS = [
+    { text: 'Your All-in-One Solution', size: 'xl',  accent: true  },
+    { text: 'Consulting',               size: 'lg',  accent: false },
+    { text: 'Accounting',               size: 'lg',  accent: false },
+    { text: 'Web Development',          size: 'lg',  accent: false },
+    { text: 'Marketing',                size: 'lg',  accent: true  },
+    { text: 'POS Systems',              size: 'md',  accent: true  },
+    { text: 'Professional',             size: 'md',  accent: false },
+    { text: 'Trusted',                  size: 'md',  accent: false },
+    { text: 'Tailored',                 size: 'md',  accent: false },
+  ];
+
+  /* Build DOM pill elements */
+  const tags = WORDS.map(word => {
+    const el = document.createElement('div');
+    el.className = 'word-tag word-tag--' + word.size + (word.accent ? ' word-tag--accent' : '');
+    el.textContent = word.text;
+    container.appendChild(el);
+    return { ...word, el, w: 0, h: 0, body: null };
+  });
+
+  /* Reduced-motion: CSS handles static layout — no JS physics needed */
+  if (isReduced) return;
+
+  /* ── Wait for Matter.js CDN and container dimensions ─────────────────── */
+  let attempts = 0;
+  function tryInit() {
+    attempts++;
+    if (attempts > 120) return; /* ~2 s timeout */
+    if (typeof Matter === 'undefined' || container.offsetWidth < 50 || container.offsetHeight < 50) {
+      requestAnimationFrame(tryInit);
+      return;
+    }
+    setupPhysics(container.offsetWidth, container.offsetHeight);
+  }
+  requestAnimationFrame(tryInit);
+
+  /* ── Physics setup ───────────────────────────────────────────────────── */
+  function setupPhysics(W, H) {
+    /* Measure rendered pill sizes */
+    tags.forEach(t => { t.w = t.el.offsetWidth; t.h = t.el.offsetHeight; });
+
+    const { Engine, Bodies, Body, World } = Matter;
+
+    const engine = Engine.create({ gravity: { x: 0, y: 0 } }); /* zero gravity — cluster stays centred */
+
+    /* Invisible boundary walls */
+    const S = 50;
+    World.add(engine.world, [
+      Bodies.rectangle(W / 2,      -S / 2,      W + S * 2, S, { isStatic: true, restitution: 0.5, friction: 0.05 }),
+      Bodies.rectangle(W / 2,  H + S / 2,       W + S * 2, S, { isStatic: true, restitution: 0.5, friction: 0.05 }),
+      Bodies.rectangle(-S / 2,     H / 2,    S, H + S * 2,    { isStatic: true, restitution: 0.5, friction: 0.05 }),
+      Bodies.rectangle(W + S / 2,  H / 2,    S, H + S * 2,    { isStatic: true, restitution: 0.5, friction: 0.05 }),
+    ]);
+
+    /* Tighter cluster — all within 20-80% of container, avoids edges */
+    const cx = W * 0.5, cy = H * 0.5;
+    const POSITIONS = [
+      [0.50, 0.46],  /* XL  — visual centre                   */
+      [0.27, 0.22],  /* LG  Consulting   — upper-left         */
+      [0.73, 0.22],  /* LG  Accounting   — upper-right        */
+      [0.23, 0.70],  /* LG  Web Dev      — lower-left         */
+      [0.75, 0.70],  /* LG  Marketing    — lower-right        */
+      [0.50, 0.14],  /* MD  POS Systems  — top-centre         */
+      [0.17, 0.46],  /* MD  Professional — left-mid           */
+      [0.83, 0.46],  /* MD  Trusted      — right-mid          */
+      [0.50, 0.83],  /* MD  Tailored     — bottom-centre      */
+    ];
+    tags.forEach((t, i) => {
+      const [fx, fy] = POSITIONS[i] || [0.5, 0.5];
+      const pad = 12;
+      /* Home position — attractor will pull body back here */
+      t.hx = Math.max(t.w / 2 + pad, Math.min(W - t.w / 2 - pad, W * fx));
+      t.hy = Math.max(t.h / 2 + pad, Math.min(H - t.h / 2 - pad, H * fy));
+
+      /* Spawn with tiny jitter so bodies don't stack exactly on each other */
+      const jitter = 6;
+      const x = t.hx + (Math.random() - 0.5) * jitter;
+      const y = t.hy + (Math.random() - 0.5) * jitter;
+
+      const body = Bodies.rectangle(x, y, t.w, t.h, {
+        restitution: 0.20,  /* low bounce — calm collisions */
+        friction:    0.05,
+        frictionAir: 0.013, /* light air drag — bodies drift gently */
+        density:     0.0015,
+        label:       'word',
+      });
+      /* Gentle random initial drift — home attractor keeps them in place */
+      Body.setVelocity(body, {
+        x: (Math.random() - 0.5) * 0.5,
+        y: (Math.random() - 0.5) * 0.5,
+      });
+      Body.setAngle(body, (Math.random() - 0.5) * 0.08);
+      t.body = body;
+      World.add(engine.world, body);
+    });
+
+    /* Prepare divs — positioned via CSS transform from top-left origin */
+    tags.forEach(t => {
+      t.el.style.position = 'absolute';
+      t.el.style.left     = '0';
+      t.el.style.top      = '0';
+      t.el.style.opacity  = '0';
+      t.el.style.transition = 'opacity 0.5s ease';
+    });
+
+    /* ── Mouse repulsion ──────────────────────────────────────────────── */
+    let mx = -9999, my = -9999, hovering = false;
+    container.addEventListener('mousemove', e => {
+      const r = container.getBoundingClientRect();
+      mx = e.clientX - r.left;
+      my = e.clientY - r.top;
+      hovering = true;
+    });
+    container.addEventListener('mouseleave', () => { hovering = false; });
+
+    /* ── RAF loop ─────────────────────────────────────────────────────── */
+    let raf, frameCount = 0, revealed = false;
+
+    function tick() {
+      Engine.update(engine, 16.667);
+      frameCount++;
+
+      /* Mouse repulsion — subtle quadratic falloff within 200 px */
+      if (hovering) {
+        tags.forEach(t => {
+          const dx   = t.body.position.x - mx;
+          const dy   = t.body.position.y - my;
+          const dist = Math.hypot(dx, dy);
+          if (dist < 200 && dist > 1) {
+            const k = 1 - dist / 200;
+            const f = 0.00015 * k * k;
+            Body.applyForce(t.body, t.body.position, { x: (dx / dist) * f, y: (dy / dist) * f });
+          }
+        });
+      }
+
+      /* Home attractor — each body pulled toward its own intended position */
+      tags.forEach(t => {
+        const dx = t.hx - t.body.position.x;
+        const dy = t.hy - t.body.position.y;
+        const d  = Math.hypot(dx, dy);
+        if (d > 8) {
+          const f = 0.0000055 * d; /* spring-like: stronger the further it strays */
+          Body.applyForce(t.body, t.body.position, {
+            x: (dx / d) * f,
+            y: (dy / d) * f,
+          });
+        }
+      });
+
+      /* Idle nudge — gently stir any body that has slowed, every ~2 s */
+      if (frameCount % 120 === 0) {
+        tags.forEach(t => {
+          const spd = Math.hypot(t.body.velocity.x, t.body.velocity.y);
+          if (spd < 0.5) {
+            Body.applyForce(t.body, t.body.position, {
+              x: (Math.random() - 0.5) * 0.00030,
+              y: (Math.random() - 0.5) * 0.00030,
+            });
+          }
+        });
+      }
+
+      /* Cap speed — low ceiling keeps motion premium, not frantic */
+      const MAX_SPD = 1.8;
+      tags.forEach(t => {
+        const spd = Math.hypot(t.body.velocity.x, t.body.velocity.y);
+        if (spd > MAX_SPD) {
+          Body.setVelocity(t.body, {
+            x: (t.body.velocity.x / spd) * MAX_SPD,
+            y: (t.body.velocity.y / spd) * MAX_SPD,
+          });
+        }
+        /* Clamp rotation to ±13° to keep words readable */
+        const MAX_A = 0.23;
+        if (Math.abs(t.body.angle) > MAX_A) {
+          Body.setAngle(t.body, Math.sign(t.body.angle) * MAX_A);
+          Body.setAngularVelocity(t.body, t.body.angularVelocity * 0.4);
+        }
+        /* Damp angular velocity */
+        if (Math.abs(t.body.angularVelocity) > 0.008) {
+          Body.setAngularVelocity(t.body, t.body.angularVelocity * 0.88);
+        }
+      });
+
+      /* Sync DOM positions */
+      if (!revealed) { tags.forEach(t => { t.el.style.opacity = '1'; }); revealed = true; }
+      tags.forEach(t => {
+        const { x, y } = t.body.position;
+        t.el.style.transform = `translate(${(x - t.w / 2).toFixed(1)}px,${(y - t.h / 2).toFixed(1)}px) rotate(${t.body.angle.toFixed(4)}rad)`;
+      });
+
+      raf = requestAnimationFrame(tick);
+    }
+
+    raf = requestAnimationFrame(tick);
+
+    /* Pause when tab hidden */
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) cancelAnimationFrame(raf);
+      else raf = requestAnimationFrame(tick);
+    });
+
+    /* Cleanup */
+    window.addEventListener('pagehide', () => {
+      cancelAnimationFrame(raf);
+      World.clear(engine.world);
+      Engine.clear(engine);
+    });
+  }
+})();
+
+/* ═══════════════════════════════════════════════════════════════════════════
    ANIMATED HIGHLIGHT TEXT
    Cycles green glow through key phrases
    ═══════════════════════════════════════════════════════════════════════════ */
@@ -262,7 +488,7 @@ function runGSAP() {
       yPercent: 12, ease: 'none',
       scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true }
     });
-    gsap.to('.orb__wrap', {
+    gsap.to('#wordCloud', {
       y: -60, ease: 'none',
       scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true }
     });

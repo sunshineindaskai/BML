@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=3" />
+  <link rel="stylesheet" href="styles.css?v=5" />
 </head>
 <body>
 
@@ -95,34 +95,9 @@
           </div>
         </div>
 
-        <!-- Right: abstract orb visual -->
+        <!-- Right: interactive word cloud -->
         <div class="hero__visual" aria-hidden="true" id="heroVisual">
-          <div class="orb__wrap">
-            <div class="orb__diffuse"></div>
-            <div class="orb__sphere">
-              <div class="orb__inner-glow"></div>
-              <div class="orb__ring orb__ring--1"></div>
-              <div class="orb__ring orb__ring--2"></div>
-              <div class="orb__ring orb__ring--3"></div>
-              <div class="orb__core"></div>
-              <div class="orb__chip orb__chip--tl">
-                <span class="orb__chip-dot"></span>Strategy
-              </div>
-              <div class="orb__chip orb__chip--br">
-                <span class="orb__chip-dot"></span>Growth
-              </div>
-            </div>
-            <div class="orb__orbit orb__orbit--1"><div class="orb__orbit-dot"></div></div>
-            <div class="orb__orbit orb__orbit--2"><div class="orb__orbit-dot"></div></div>
-            <div class="orb__stat orb__stat--1">
-              <span class="orb__stat-val">6</span>
-              <span class="orb__stat-lbl">Disciplines</span>
-            </div>
-            <div class="orb__stat orb__stat--2">
-              <span class="orb__stat-val">1</span>
-              <span class="orb__stat-lbl">Partner</span>
-            </div>
-          </div>
+          <div class="word-cloud" id="wordCloud"></div>
         </div>
 
       </div>
@@ -520,9 +495,11 @@
     </div>
   </footer>
 
+  <!-- Matter.js physics -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
   <!-- GSAP + ScrollTrigger from CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script src="app.js?v=9"></script>
+  <script src="app.js?v=15"></script>
 </body>
 </html>
