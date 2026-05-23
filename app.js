@@ -181,22 +181,24 @@ if (yr) yr.textContent = new Date().getFullYear();
 
   const isReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  /* variant: 'primary' = green-glass service words (tied together visually)
+              'secondary' = quieter navy-glass supporting words              */
   const WORDS = [
-    { text: 'Your All-in-One Solution', size: 'xl',  accent: true  },
-    { text: 'Consulting',               size: 'lg',  accent: false },
-    { text: 'Accounting',               size: 'lg',  accent: false },
-    { text: 'Web Development',          size: 'lg',  accent: false },
-    { text: 'Marketing',                size: 'lg',  accent: true  },
-    { text: 'POS Systems',              size: 'md',  accent: true  },
-    { text: 'Professional',             size: 'md',  accent: false },
-    { text: 'Trusted',                  size: 'md',  accent: false },
-    { text: 'Tailored',                 size: 'md',  accent: false },
+    { text: 'Your All-in-One Solution', size: 'xl', variant: 'primary'   },
+    { text: 'Consulting',               size: 'lg', variant: 'primary'   },
+    { text: 'Accounting',               size: 'lg', variant: 'primary'   },
+    { text: 'Web Development',          size: 'lg', variant: 'primary'   },
+    { text: 'Marketing',                size: 'lg', variant: 'primary'   },
+    { text: 'POS Systems',              size: 'md', variant: 'primary'   },
+    { text: 'Professional',             size: 'md', variant: 'secondary' },
+    { text: 'Trusted',                  size: 'md', variant: 'secondary' },
+    { text: 'Tailored',                 size: 'md', variant: 'secondary' },
   ];
 
   /* Build DOM pill elements */
   const tags = WORDS.map(word => {
     const el = document.createElement('div');
-    el.className = 'word-tag word-tag--' + word.size + (word.accent ? ' word-tag--accent' : '');
+    el.className = `word-tag word-tag--${word.size} word-tag--${word.variant}`;
     el.textContent = word.text;
     container.appendChild(el);
     return { ...word, el, w: 0, h: 0, body: null };
@@ -236,18 +238,26 @@ if (yr) yr.textContent = new Date().getFullYear();
       Bodies.rectangle(W + S / 2,  H / 2,    S, H + S * 2,    { isStatic: true, restitution: 0.5, friction: 0.05 }),
     ]);
 
-    /* Tighter cluster — all within 20-80% of container, avoids edges */
+    /* Cluster map — secondary words (Professional, Trusted, Tailored) are
+       distributed across different rows so they feel integrated, not segregated.
+       Each secondary word shares a row with at least one primary word.
+
+       Row 1  y=0.10  POS Systems (primary MD, top anchor)
+       Row 2  y=0.27  Consulting (primary LG) · Tailored (secondary MD) · Accounting (primary LG)
+       Row 3  y=0.50  Your All-in-One Solution (XL — alone, too wide to share)
+       Row 4  y=0.73  Web Dev (primary LG) · Trusted (secondary MD)
+       Row 5  y=0.89  Marketing (primary LG) · Professional (secondary MD)              */
     const cx = W * 0.5, cy = H * 0.5;
     const POSITIONS = [
-      [0.50, 0.46],  /* XL  — visual centre                   */
-      [0.27, 0.22],  /* LG  Consulting   — upper-left         */
-      [0.73, 0.22],  /* LG  Accounting   — upper-right        */
-      [0.23, 0.70],  /* LG  Web Dev      — lower-left         */
-      [0.75, 0.70],  /* LG  Marketing    — lower-right        */
-      [0.50, 0.14],  /* MD  POS Systems  — top-centre         */
-      [0.17, 0.46],  /* MD  Professional — left-mid           */
-      [0.83, 0.46],  /* MD  Trusted      — right-mid          */
-      [0.50, 0.83],  /* MD  Tailored     — bottom-centre      */
+      [0.50, 0.50],  /* XL  Your All-in-One Solution — centre anchor     */
+      [0.20, 0.27],  /* LG  Consulting   — upper-left                    */
+      [0.80, 0.27],  /* LG  Accounting   — upper-right                   */
+      [0.26, 0.73],  /* LG  Web Dev      — lower-left                    */
+      [0.30, 0.89],  /* LG  Marketing    — bottom-left                   */
+      [0.50, 0.10],  /* MD  POS Systems  — top-centre                    */
+      [0.73, 0.89],  /* MD  Professional — bottom-right (shares row 5)   */
+      [0.67, 0.73],  /* MD  Trusted      — lower-right (shares row 4)    */
+      [0.50, 0.27],  /* MD  Tailored     — upper-centre (shares row 2)   */
     ];
     tags.forEach((t, i) => {
       const [fx, fy] = POSITIONS[i] || [0.5, 0.5];
@@ -332,14 +342,14 @@ if (yr) yr.textContent = new Date().getFullYear();
         }
       });
 
-      /* Idle nudge — gently stir any body that has slowed, every ~2 s */
+      /* Idle nudge — kick any body that has settled, every ~2 s */
       if (frameCount % 120 === 0) {
         tags.forEach(t => {
           const spd = Math.hypot(t.body.velocity.x, t.body.velocity.y);
-          if (spd < 0.5) {
-            Body.applyForce(t.body, t.body.position, {
-              x: (Math.random() - 0.5) * 0.00030,
-              y: (Math.random() - 0.5) * 0.00030,
+          if (spd < 0.12) {
+            Body.setVelocity(t.body, {
+              x: t.body.velocity.x + (Math.random() - 0.5) * 0.45,
+              y: t.body.velocity.y + (Math.random() - 0.5) * 0.45,
             });
           }
         });
@@ -428,12 +438,12 @@ if (yr) yr.textContent = new Date().getFullYear();
     return;
   }
 
-  // Start when text scrolls into view
-  const hlText = document.getElementById('hlText');
+  // Start when text scrolls into view — works on both homepage (#hlText) and about page (#approachHlText)
+  const hlText = document.getElementById('hlText') || document.getElementById('approachHlText');
   if (hlText) {
     const io = new IntersectionObserver(entries => {
       if (entries[0].isIntersecting) { start(); io.disconnect(); }
-    }, { threshold: 0.5 });
+    }, { threshold: 0.4 });
     io.observe(hlText);
   } else {
     start();
@@ -654,7 +664,108 @@ function runGSAP() {
     });
   }
 
-  /* ── Refresh triggers so elements already in view on load animate in ── */
+  /* ════════════════════════════════════════════════════════════════════════
+     ABOUT PAGE ANIMATIONS  (only run when about.html elements are present)
+     ════════════════════════════════════════════════════════════════════════ */
+
+  /* ── About hero entrance ─────────────────────────────────────────────── */
+  const ahEyebrow = document.getElementById('ahEyebrow');
+  if (ahEyebrow) {
+    if (!prefersReduced) {
+      const ahTl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+      ahTl
+        .fromTo('#ahEyebrow',    { opacity:0, y:20 },        { opacity:1, y:0, duration:0.7 }, 0.2);
+      document.querySelectorAll('.about-hero__headline .h-line').forEach((line, i) => {
+        ahTl.fromTo(line,
+          { opacity:0, yPercent:110 },
+          { opacity:1, yPercent:0, duration:0.75, ease:'power4.out' },
+          0.45 + i * 0.12
+        );
+      });
+      ahTl
+        .fromTo('#ahSub',        { opacity:0, y:24 }, { opacity:1, y:0, duration:0.7 }, 0.9)
+        .fromTo('#ahActions',    { opacity:0, y:20 }, { opacity:1, y:0, duration:0.6 }, 1.05)
+        .fromTo('#ahScrollInd',  { opacity:0 },       { opacity:1, duration:0.5 },       1.35)
+        .fromTo('#ahVisual',     { opacity:0, scale:0.94 }, { opacity:1, scale:1, duration:1.1 }, 0.55);
+    } else {
+      gsap.set(['#ahEyebrow','#ahSub','#ahActions','#ahScrollInd','#ahVisual'], { opacity:1 });
+      gsap.set('.about-hero__headline .h-line', { opacity:1, yPercent:0 });
+    }
+  }
+
+  /* ── Story split: section text + image clip reveal ───────────────────── */
+  if (!prefersReduced) {
+    if (document.querySelector('.story-split__text')) {
+      gsap.fromTo(
+        '.story-split__text .section__label, .story-split__text .section__heading, .story-split__body',
+        { opacity:0, y:30 },
+        { opacity:1, y:0, duration:0.7, stagger:0.12, ease:'power3.out',
+          scrollTrigger: { trigger: '.story-split__text', start: 'top 78%', once: true } }
+      );
+    }
+    const storyImg = document.querySelector('.story-img');
+    if (storyImg) {
+      gsap.fromTo(storyImg,
+        { clipPath: 'inset(0 0 100% 0)' },
+        { clipPath: 'inset(0 0 0% 0)', duration:1.1, ease:'power3.inOut',
+          scrollTrigger: { trigger: '#storySplitVisual', start: 'top 72%', once: true } }
+      );
+    }
+  }
+
+  /* ── Values section: heading + staggered cards ───────────────────────── */
+  if (!prefersReduced) {
+    if (document.querySelector('.values-section__hd')) {
+      gsap.fromTo(
+        '.values-section__hd .section__label, .values-section__hd .section__heading',
+        { opacity:0, y:30 },
+        { opacity:1, y:0, duration:0.7, stagger:0.12, ease:'power3.out',
+          scrollTrigger: { trigger: '.values-section__hd', start: 'top 78%', once: true } }
+      );
+      gsap.fromTo('.value-card',
+        { opacity:0, y:40, scale:0.97 },
+        { opacity:1, y:0, scale:1, duration:0.6, stagger:0.1, ease:'power3.out',
+          scrollTrigger: { trigger: '.values-grid', start: 'top 82%', once: true } }
+      );
+    }
+  }
+
+  /* ── Who We Help: text + staggered list items ────────────────────────── */
+  if (!prefersReduced) {
+    if (document.querySelector('.who-help__text')) {
+      gsap.fromTo(
+        '.who-help__text .section__label, .who-help__text .section__heading, .who-help__body',
+        { opacity:0, y:30 },
+        { opacity:1, y:0, duration:0.7, stagger:0.12, ease:'power3.out',
+          scrollTrigger: { trigger: '.who-help__text', start: 'top 78%', once: true } }
+      );
+      gsap.fromTo('.who-item',
+        { opacity:0, x:-20 },
+        { opacity:1, x:0, duration:0.55, stagger:0.09, ease:'power3.out',
+          scrollTrigger: { trigger: '#whoHelpList', start: 'top 82%', once: true } }
+      );
+    }
+  }
+
+  /* ── Approach section ────────────────────────────────────────────────── */
+  if (!prefersReduced) {
+    if (document.querySelector('.approach-section__hd')) {
+      gsap.fromTo(
+        '.approach-section__hd .section__label, .approach-section__hd .section__heading',
+        { opacity:0, y:30 },
+        { opacity:1, y:0, duration:0.7, stagger:0.12, ease:'power3.out',
+          scrollTrigger: { trigger: '.approach-section__hd', start: 'top 78%', once: true } }
+      );
+      gsap.fromTo(
+        '.approach-section__copy, .approach-hl-text, .approach-services',
+        { opacity:0, y:24 },
+        { opacity:1, y:0, duration:0.7, stagger:0.15, ease:'power3.out',
+          scrollTrigger: { trigger: '.approach-section__body', start: 'top 80%', once: true } }
+      );
+    }
+  }
+
+    /* ── Refresh triggers so elements already in view on load animate in ── */
   requestAnimationFrame(() => ScrollTrigger.refresh());
 
 }

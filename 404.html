@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Page Not Found | BML</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,700;1,600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100svh;
+      background: #030D1A;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Inter', system-ui, sans-serif;
+      color: rgba(255,255,255,0.65);
+      text-align: center;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Subtle background glow */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 30%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 700px;
+      height: 500px;
+      background: radial-gradient(ellipse, rgba(42,179,134,0.07) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    /* Dot grid */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size: 32px 32px;
+      pointer-events: none;
+    }
+
+    .wrap { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 0; }
+
+    .logo {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.08em;
+      margin-bottom: 3.5rem;
+      text-decoration: none;
+    }
+    .logo span {
+      display: block;
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 0.5625rem;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      margin-top: 0.3rem;
+    }
+
+    .code {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(6rem, 18vw, 10rem);
+      font-weight: 700;
+      line-height: 1;
+      color: rgba(42,179,134,0.18);
+      letter-spacing: -0.04em;
+      margin-bottom: 1.25rem;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.875rem;
+    }
+
+    p {
+      font-size: 1rem;
+      max-width: 360px;
+      line-height: 1.75;
+      margin-bottom: 2.5rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.8125rem 2rem;
+      border-radius: 100px;
+      background: linear-gradient(135deg, #1a6b4a 0%, #0f4d3a 100%);
+      border: 1px solid rgba(42,179,134,0.35);
+      color: #fff;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      text-decoration: none;
+      transition: opacity 0.2s, box-shadow 0.2s;
+    }
+    .btn:hover {
+      opacity: 0.88;
+      box-shadow: 0 0 28px rgba(42,179,134,0.22);
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <a href="/" class="logo">BML<span>Business Mindset Limited</span></a>
+    <div class="code" aria-hidden="true">404</div>
+    <h1>Page not found.</h1>
+    <p>This page doesn't exist or has been moved. Let's get you back on track.</p>
+    <a href="/" class="btn">Back to Home</a>
+  </div>
+</body>
+</html>
