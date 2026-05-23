@@ -55,6 +55,10 @@ if (yr) yr.textContent = new Date().getFullYear();
 
 /* ── Active nav link on scroll ──────────────────────────────────────────────── */
 (function initActiveLink() {
+  /* On multi-page routes (About, Services) the active class is set in HTML
+     via aria-current="page" — skip the scroll observer to preserve it. */
+  if (document.querySelector('[aria-current="page"]')) return;
+
   const sections = document.querySelectorAll('section[id]');
   const links    = document.querySelectorAll('.nav__link');
   if (!sections.length) return;
@@ -170,9 +174,31 @@ if (yr) yr.textContent = new Date().getFullYear();
 
 /* ═══════════════════════════════════════════════════════════════════════════
    HERO WORD CLOUD  (Matter.js physics)
+   Reusable — called for both #wordCloud (home) and #svWordCloud (services)
    ═══════════════════════════════════════════════════════════════════════════ */
-(function initWordCloud() {
-  const container = document.getElementById('wordCloud');
+
+/* Six core words — all green-glass primary */
+const CLOUD_WORDS = [
+  { text: 'Your All-in-One Solution', size: 'xl', variant: 'primary' },
+  { text: 'Consulting',               size: 'lg', variant: 'primary' },
+  { text: 'Accounting',               size: 'lg', variant: 'primary' },
+  { text: 'Web Development',          size: 'lg', variant: 'primary' },
+  { text: 'Marketing',                size: 'lg', variant: 'primary' },
+  { text: 'POS Systems',              size: 'md', variant: 'primary' },
+];
+
+/* Fractional [x, y] positions for a balanced 6-item cloud */
+const CLOUD_POSITIONS = [
+  [0.50, 0.50],  /* XL  Your All-in-One Solution — centre anchor  */
+  [0.22, 0.26],  /* LG  Consulting   — upper-left                 */
+  [0.78, 0.26],  /* LG  Accounting   — upper-right                */
+  [0.22, 0.76],  /* LG  Web Dev      — lower-left                 */
+  [0.78, 0.76],  /* LG  Marketing    — lower-right                */
+  [0.50, 0.10],  /* MD  POS Systems  — top-centre                 */
+];
+
+function createWordCloud(containerId) {
+  const container = document.getElementById(containerId);
   if (!container) return;
 
   /* Only run on non-touch, non-small-screen contexts */
@@ -181,22 +207,8 @@ if (yr) yr.textContent = new Date().getFullYear();
 
   const isReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* variant: 'primary' = green-glass service words (tied together visually)
-              'secondary' = quieter navy-glass supporting words              */
-  const WORDS = [
-    { text: 'Your All-in-One Solution', size: 'xl', variant: 'primary'   },
-    { text: 'Consulting',               size: 'lg', variant: 'primary'   },
-    { text: 'Accounting',               size: 'lg', variant: 'primary'   },
-    { text: 'Web Development',          size: 'lg', variant: 'primary'   },
-    { text: 'Marketing',                size: 'lg', variant: 'primary'   },
-    { text: 'POS Systems',              size: 'md', variant: 'primary'   },
-    { text: 'Professional',             size: 'md', variant: 'secondary' },
-    { text: 'Trusted',                  size: 'md', variant: 'secondary' },
-    { text: 'Tailored',                 size: 'md', variant: 'secondary' },
-  ];
-
   /* Build DOM pill elements */
-  const tags = WORDS.map(word => {
+  const tags = CLOUD_WORDS.map(word => {
     const el = document.createElement('div');
     el.className = `word-tag word-tag--${word.size} word-tag--${word.variant}`;
     el.textContent = word.text;
@@ -238,27 +250,7 @@ if (yr) yr.textContent = new Date().getFullYear();
       Bodies.rectangle(W + S / 2,  H / 2,    S, H + S * 2,    { isStatic: true, restitution: 0.5, friction: 0.05 }),
     ]);
 
-    /* Cluster map — secondary words (Professional, Trusted, Tailored) are
-       distributed across different rows so they feel integrated, not segregated.
-       Each secondary word shares a row with at least one primary word.
-
-       Row 1  y=0.10  POS Systems (primary MD, top anchor)
-       Row 2  y=0.27  Consulting (primary LG) · Tailored (secondary MD) · Accounting (primary LG)
-       Row 3  y=0.50  Your All-in-One Solution (XL — alone, too wide to share)
-       Row 4  y=0.73  Web Dev (primary LG) · Trusted (secondary MD)
-       Row 5  y=0.89  Marketing (primary LG) · Professional (secondary MD)              */
-    const cx = W * 0.5, cy = H * 0.5;
-    const POSITIONS = [
-      [0.50, 0.50],  /* XL  Your All-in-One Solution — centre anchor     */
-      [0.20, 0.27],  /* LG  Consulting   — upper-left                    */
-      [0.80, 0.27],  /* LG  Accounting   — upper-right                   */
-      [0.26, 0.73],  /* LG  Web Dev      — lower-left                    */
-      [0.30, 0.89],  /* LG  Marketing    — bottom-left                   */
-      [0.50, 0.10],  /* MD  POS Systems  — top-centre                    */
-      [0.73, 0.89],  /* MD  Professional — bottom-right (shares row 5)   */
-      [0.67, 0.73],  /* MD  Trusted      — lower-right (shares row 4)    */
-      [0.50, 0.27],  /* MD  Tailored     — upper-centre (shares row 2)   */
-    ];
+    const POSITIONS = CLOUD_POSITIONS;
     tags.forEach((t, i) => {
       const [fx, fy] = POSITIONS[i] || [0.5, 0.5];
       const pad = 12;
@@ -402,7 +394,11 @@ if (yr) yr.textContent = new Date().getFullYear();
       Engine.clear(engine);
     });
   }
-})();
+}
+
+/* Launch word cloud on home page and services page */
+createWordCloud('wordCloud');
+createWordCloud('svWordCloud');
 
 /* ═══════════════════════════════════════════════════════════════════════════
    ANIMATED HIGHLIGHT TEXT
@@ -472,23 +468,21 @@ function runGSAP() {
   if (!prefersReduced) {
     const heroTl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
-    heroTl.fromTo('#heroEyebrow', { opacity:0, y:20 }, { opacity:1, y:0, duration:0.7 }, 0.2);
-
     document.querySelectorAll('.hero__headline .h-line').forEach((line, i) => {
       heroTl.fromTo(line,
         { opacity:0, yPercent:110 },
         { opacity:1, yPercent:0, duration:0.75, ease:'power4.out' },
-        0.45 + i * 0.12
+        0.2 + i * 0.12
       );
     });
 
-    heroTl.fromTo('#heroSub',     { opacity:0, y:24 }, { opacity:1, y:0, duration:0.7 }, 0.9);
-    heroTl.fromTo('#heroActions', { opacity:0, y:20 }, { opacity:1, y:0, duration:0.6 }, 1.05);
-    heroTl.fromTo('#heroScroll',  { opacity:0 },       { opacity:1, duration:0.5 },       1.35);
-    heroTl.fromTo('#heroVisual',  { opacity:0, scale:0.92 }, { opacity:1, scale:1, duration:1.1, ease:'power3.out' }, 0.55);
+    heroTl.fromTo('#heroSub',     { opacity:0, y:24 }, { opacity:1, y:0, duration:0.7 }, 0.65);
+    heroTl.fromTo('#heroActions', { opacity:0, y:20 }, { opacity:1, y:0, duration:0.6 }, 0.80);
+    heroTl.fromTo('#heroScroll',  { opacity:0 },       { opacity:1, duration:0.5 },       1.10);
+    heroTl.fromTo('#heroVisual',  { opacity:0, scale:0.92 }, { opacity:1, scale:1, duration:1.1, ease:'power3.out' }, 0.30);
 
   } else {
-    gsap.set(['#heroEyebrow','#heroSub','#heroActions','#heroScroll','#heroVisual'], { opacity:1 });
+    gsap.set(['#heroSub','#heroActions','#heroScroll','#heroVisual'], { opacity:1 });
     gsap.set('.h-line', { opacity:1, yPercent:0 });
   }
 
@@ -669,26 +663,24 @@ function runGSAP() {
      ════════════════════════════════════════════════════════════════════════ */
 
   /* ── About hero entrance ─────────────────────────────────────────────── */
-  const ahEyebrow = document.getElementById('ahEyebrow');
-  if (ahEyebrow) {
+  const ahHeadline = document.querySelector('.about-hero__headline');
+  if (ahHeadline) {
     if (!prefersReduced) {
       const ahTl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-      ahTl
-        .fromTo('#ahEyebrow',    { opacity:0, y:20 },        { opacity:1, y:0, duration:0.7 }, 0.2);
       document.querySelectorAll('.about-hero__headline .h-line').forEach((line, i) => {
         ahTl.fromTo(line,
           { opacity:0, yPercent:110 },
           { opacity:1, yPercent:0, duration:0.75, ease:'power4.out' },
-          0.45 + i * 0.12
+          0.2 + i * 0.12
         );
       });
       ahTl
-        .fromTo('#ahSub',        { opacity:0, y:24 }, { opacity:1, y:0, duration:0.7 }, 0.9)
-        .fromTo('#ahActions',    { opacity:0, y:20 }, { opacity:1, y:0, duration:0.6 }, 1.05)
-        .fromTo('#ahScrollInd',  { opacity:0 },       { opacity:1, duration:0.5 },       1.35)
-        .fromTo('#ahVisual',     { opacity:0, scale:0.94 }, { opacity:1, scale:1, duration:1.1 }, 0.55);
+        .fromTo('#ahSub',        { opacity:0, y:24 }, { opacity:1, y:0, duration:0.7 }, 0.65)
+        .fromTo('#ahActions',    { opacity:0, y:20 }, { opacity:1, y:0, duration:0.6 }, 0.80)
+        .fromTo('#ahScrollInd',  { opacity:0 },       { opacity:1, duration:0.5 },       1.10)
+        .fromTo('#ahVisual',     { opacity:0, scale:0.94 }, { opacity:1, scale:1, duration:1.1 }, 0.30);
     } else {
-      gsap.set(['#ahEyebrow','#ahSub','#ahActions','#ahScrollInd','#ahVisual'], { opacity:1 });
+      gsap.set(['#ahSub','#ahActions','#ahScrollInd','#ahVisual'], { opacity:1 });
       gsap.set('.about-hero__headline .h-line', { opacity:1, yPercent:0 });
     }
   }
@@ -768,7 +760,198 @@ function runGSAP() {
     /* ── Refresh triggers so elements already in view on load animate in ── */
   requestAnimationFrame(() => ScrollTrigger.refresh());
 
+  /* ════════════════════════════════════════════════════════════════════════
+     SERVICES PAGE ANIMATIONS  (only run when services.html elements present)
+     ════════════════════════════════════════════════════════════════════════ */
+  const svHeadline = document.querySelector('.sv-hero__headline');
+  if (svHeadline) {
+
+    /* ── Services hero entrance ────────────────────────────────────────── */
+    if (!prefersReduced) {
+      const svTl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+      document.querySelectorAll('.sv-hero__headline .h-line').forEach((line, i) => {
+        svTl.fromTo(line,
+          { opacity:0, yPercent:110 },
+          { opacity:1, yPercent:0, duration:0.75, ease:'power4.out' },
+          0.2 + i * 0.12
+        );
+      });
+      svTl
+        .fromTo('#svSub',       { opacity:0, y:24 }, { opacity:1, y:0, duration:0.7 }, 0.65)
+        .fromTo('#svActions',   { opacity:0, y:20 }, { opacity:1, y:0, duration:0.6 }, 0.80)
+        .fromTo('#svScrollInd', { opacity:0 },       { opacity:1, duration:0.5 },       1.10)
+        .fromTo('#svVisual',    { opacity:0, scale:0.94 }, { opacity:1, scale:1, duration:1.1 }, 0.30);
+    } else {
+      gsap.set(['#svSub','#svActions','#svScrollInd','#svVisual'], { opacity:1 });
+      gsap.set('.sv-hero__headline .h-line', { opacity:1, yPercent:0 });
+    }
+
+    /* ── Philosophy ─────────────────────────────────────────────────────── */
+    if (!prefersReduced) {
+      gsap.fromTo(
+        '.sv-philosophy__text .section__label, .sv-philosophy__heading',
+        { opacity:0, y:30 },
+        { opacity:1, y:0, duration:0.7, stagger:0.12, ease:'power3.out',
+          scrollTrigger: { trigger: '.sv-philosophy__text', start: 'top 78%', once: true } }
+      );
+      gsap.fromTo(
+        '.sv-phil-copy, .sv-phil-tags',
+        { opacity:0, y:24 },
+        { opacity:1, y:0, duration:0.7, stagger:0.12, ease:'power3.out',
+          scrollTrigger: { trigger: '.sv-philosophy__body', start: 'top 80%', once: true } }
+      );
+    }
+
+    /* ── Services grid ──────────────────────────────────────────────────── */
+    if (!prefersReduced) {
+      gsap.fromTo(
+        '.sv-services__hd .section__label, .sv-services__hd .section__heading',
+        { opacity:0, y:30 },
+        { opacity:1, y:0, duration:0.7, stagger:0.12, ease:'power3.out',
+          scrollTrigger: { trigger: '.sv-services__hd', start: 'top 78%', once: true } }
+      );
+      gsap.fromTo('.sv-svc-card',
+        { opacity:0, y:40, scale:0.97 },
+        { opacity:1, y:0, scale:1, duration:0.6, stagger:0.08, ease:'power3.out',
+          scrollTrigger: { trigger: '.sv-svc-grid', start: 'top 82%', once: true } }
+      );
+      gsap.fromTo('.sv-services__foot',
+        { opacity:0, y:20 },
+        { opacity:1, y:0, duration:0.5,
+          scrollTrigger: { trigger: '.sv-services__foot', start: 'top 88%', once: true } }
+      );
+    }
+
+    /* ── 3-D tilt on service cards ──────────────────────────────────────── */
+    if (!prefersReduced) {
+      document.querySelectorAll('.sv-svc-card').forEach(card => {
+        card.addEventListener('mousemove', e => {
+          const rect = card.getBoundingClientRect();
+          const x    = (e.clientX - rect.left) / rect.width  - 0.5;
+          const y    = (e.clientY - rect.top)  / rect.height - 0.5;
+          gsap.to(card, { rotateY: x * 6, rotateX: -y * 4, transformPerspective:900, ease:'power2.out', duration:0.35 });
+        });
+        card.addEventListener('mouseleave', () => {
+          gsap.to(card, { rotateY:0, rotateX:0, duration:0.5, ease:'power3.out' });
+        });
+      });
+    }
+
+    /* ── Client experience ──────────────────────────────────────────────── */
+    if (!prefersReduced) {
+      gsap.fromTo(
+        '.sv-experience__hd .section__label, .sv-experience__hd .section__heading, .sv-experience__intro',
+        { opacity:0, y:30 },
+        { opacity:1, y:0, duration:0.7, stagger:0.12, ease:'power3.out',
+          scrollTrigger: { trigger: '.sv-experience__hd', start: 'top 78%', once: true } }
+      );
+      gsap.fromTo('.sv-exp-step',
+        { opacity:0, y:36 },
+        { opacity:1, y:0, duration:0.6, stagger:0.1, ease:'power3.out',
+          scrollTrigger: { trigger: '.sv-exp-grid', start: 'top 82%', once: true } }
+      );
+    }
+
+    /* ── Quality pillars ────────────────────────────────────────────────── */
+    if (!prefersReduced) {
+      gsap.fromTo(
+        '.sv-quality__hd .section__label, .sv-quality__hd .section__heading, .sv-quality__intro',
+        { opacity:0, y:30 },
+        { opacity:1, y:0, duration:0.7, stagger:0.12, ease:'power3.out',
+          scrollTrigger: { trigger: '.sv-quality__hd', start: 'top 78%', once: true } }
+      );
+      gsap.fromTo('.sv-pillar',
+        { opacity:0, y:40, scale:0.97 },
+        { opacity:1, y:0, scale:1, duration:0.6, stagger:0.1, ease:'power3.out',
+          scrollTrigger: { trigger: '.sv-pillars', start: 'top 82%', once: true } }
+      );
+    }
+
+    /* ── Pathway ────────────────────────────────────────────────────────── */
+    if (!prefersReduced) {
+      gsap.fromTo(
+        '.sv-pathway__hd .section__label, .sv-pathway__hd .section__heading',
+        { opacity:0, y:30 },
+        { opacity:1, y:0, duration:0.7, stagger:0.12, ease:'power3.out',
+          scrollTrigger: { trigger: '.sv-pathway__hd', start: 'top 78%', once: true } }
+      );
+      gsap.fromTo('.sv-step',
+        { opacity:0, y:30 },
+        { opacity:1, y:0, duration:0.55, stagger:0.1, ease:'power3.out',
+          scrollTrigger: { trigger: '.sv-steps', start: 'top 82%', once: true } }
+      );
+      gsap.fromTo('.sv-pathway__cta',
+        { opacity:0, y:16 },
+        { opacity:1, y:0, duration:0.5,
+          scrollTrigger: { trigger: '.sv-pathway__cta', start: 'top 88%', once: true } }
+      );
+    }
+
+  }
+
+  /* ── Contact page ─────────────────────────────────────────────────────── */
+  const ctHeadline = document.querySelector('.ct-hero__headline');
+  if (ctHeadline) {
+    const ctLines = ctHeadline.querySelectorAll('.h-line');
+
+    if (prefersReduced) {
+      gsap.set([ctLines, '#ctSub', '#ctActions'], { opacity: 1, y: 0 });
+      gsap.set(['#ctFormPanel', '#ctInfoPanel'], { opacity: 1, y: 0 });
+    } else {
+      /* Hero entrance */
+      const ctTL = gsap.timeline({ defaults: { ease: 'power3.out' } });
+      ctTL
+        .fromTo(ctLines,
+          { opacity: 0, y: 40 },
+          { opacity: 1, y: 0, duration: 0.7, stagger: 0.12 })
+        .fromTo('#ctSub',
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 0.55 }, '-=0.3')
+        .fromTo('#ctActions',
+          { opacity: 0, y: 16 },
+          { opacity: 1, y: 0, duration: 0.5 }, '-=0.25');
+
+      /* Form + info panels */
+      gsap.fromTo('#ctFormPanel',
+        { opacity: 0, y: 32 },
+        { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out',
+          scrollTrigger: { trigger: '.ct-contact', start: 'top 80%', once: true } }
+      );
+      gsap.fromTo('#ctInfoPanel',
+        { opacity: 0, y: 24 },
+        { opacity: 1, y: 0, duration: 0.65, ease: 'power3.out',
+          scrollTrigger: { trigger: '.ct-contact', start: 'top 80%', once: true },
+          delay: 0.12 }
+      );
+    }
+  }
+
 }
+
+/* ── Contact form submit handler ──────────────────────────────────────────── */
+(function initContactForm() {
+  const form    = document.getElementById('ctForm');
+  const success = document.getElementById('ctSuccess');
+  const reset   = document.getElementById('ctFormReset');
+
+  if (!form || !success) return;
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    form.setAttribute('hidden', '');
+    success.removeAttribute('hidden');
+    success.focus();
+  });
+
+  if (reset) {
+    reset.addEventListener('click', function () {
+      success.setAttribute('hidden', '');
+      form.removeAttribute('hidden');
+      form.reset();
+      form.querySelector('input, select, textarea').focus();
+    });
+  }
+}());
 
 /* Run after all scripts (including CDN) have loaded */
 if (document.readyState === 'complete') {

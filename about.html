@@ -19,7 +19,7 @@
   <meta name="twitter:title" content="About Us | BML – Business Mindset Limited" />
   <meta name="twitter:description" content="Built to help MSMEs move with clarity across Jamaica and the Caribbean." />
   <meta name="twitter:image" content="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80" />
-  <link rel="stylesheet" href="styles.css?v=9" />
+  <link rel="stylesheet" href="styles.css?v=13" />
 </head>
 <body data-page="about">
 
@@ -39,16 +39,15 @@
   <header class="nav" id="nav">
     <div class="nav__inner container">
       <a href="index.html" class="nav__logo" aria-label="BML Home">
-        <span class="nav__logo-mark">BML</span>
-        <span class="nav__logo-sub">Business Mindset Limited</span>
+        <img src="logo.png" alt="BML – Business Mindset Limited" class="nav__logo-img" />
       </a>
 
       <nav class="nav__links" aria-label="Main navigation">
         <a href="index.html"          class="nav__link">Home</a>
         <a href="about.html"          class="nav__link nav__link--active" aria-current="page">About</a>
-        <a href="index.html#services" class="nav__link">Services</a>
+        <a href="services.html"       class="nav__link">Services</a>
         <a href="index.html#story"    class="nav__link">Process</a>
-        <a href="index.html#contact"  class="nav__link">Contact</a>
+        <a href="contact.html"  class="nav__link">Contact</a>
       </nav>
 
       <a href="https://calendly.com/businessmindsetjm/consultation"
@@ -62,10 +61,10 @@
 
     <div class="nav__mobile" id="mobileMenu" aria-hidden="true">
       <a href="index.html"          class="nav__mobile-link">Home</a>
-      <a href="about.html"          class="nav__mobile-link">About</a>
-      <a href="index.html#services" class="nav__mobile-link">Services</a>
+      <a href="about.html"          class="nav__mobile-link nav__mobile-link--active">About</a>
+      <a href="services.html"       class="nav__mobile-link">Services</a>
       <a href="index.html#story"    class="nav__mobile-link">Process</a>
-      <a href="index.html#contact"  class="nav__mobile-link">Contact</a>
+      <a href="contact.html"  class="nav__mobile-link">Contact</a>
       <a href="https://calendly.com/businessmindsetjm/consultation"
          target="_blank" rel="noopener noreferrer"
          class="btn btn--primary nav__mobile-cta">Book a Consultation</a>
@@ -80,8 +79,6 @@
 
         <!-- Left: text -->
         <div class="about-hero__text">
-          <p class="hero__eyebrow" id="ahEyebrow">About Us</p>
-
           <h1 class="about-hero__headline" id="ahHeadline">
             <span class="h-line" data-line="0">Built to Help</span>
             <span class="h-line" data-line="1">Businesses Move</span>
@@ -107,26 +104,18 @@
           </div>
         </div>
 
-        <!-- Right: glass panel decoration -->
+        <!-- Right: image visual -->
         <div class="about-hero__visual" id="ahVisual" aria-hidden="true">
-          <div class="ah-panel">
-            <div class="ah-panel__glow"></div>
-            <div class="ah-panel__ring"></div>
-            <div class="ah-panel__ring ah-panel__ring--2"></div>
-            <div class="ah-panel__line ah-panel__line--h"></div>
-            <div class="ah-panel__line ah-panel__line--v"></div>
-            <div class="ah-panel__content">
-              <div class="ah-panel__logo">BML</div>
-              <p class="ah-panel__tagline">Structure. Visibility. Growth.</p>
-              <div class="ah-panel__chips">
-                <span class="ah-chip ah-chip--green">Consultancy</span>
-                <span class="ah-chip">Accounting</span>
-                <span class="ah-chip ah-chip--green">POS Systems</span>
-                <span class="ah-chip">Web Development</span>
-                <span class="ah-chip ah-chip--green">Marketing</span>
-                <span class="ah-chip">Bookkeeping</span>
-              </div>
-            </div>
+          <div class="ah-img-wrap">
+            <!-- Replace src with /images/about-hero.jpg when available -->
+            <img
+              src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=900&q=80"
+              alt="BML business strategy session"
+              loading="eager"
+              class="ah-img"
+            />
+            <div class="ah-img__overlay"></div>
+            <div class="ah-img__glow"></div>
           </div>
         </div>
 
@@ -304,9 +293,9 @@
             <span class="approach-svc">Consultancy</span>
             <span class="approach-svc">Accounting</span>
             <span class="approach-svc">Bookkeeping</span>
-            <span class="approach-svc approach-svc--green">POS Systems</span>
-            <span class="approach-svc approach-svc--green">Website Creation</span>
-            <span class="approach-svc approach-svc--green">Marketing Strategy</span>
+            <span class="approach-svc">POS Systems</span>
+            <span class="approach-svc">Website Creation</span>
+            <span class="approach-svc">Marketing Strategy</span>
           </div>
         </div>
 
@@ -341,7 +330,7 @@
     <div class="container footer__inner">
 
       <div class="footer__brand">
-        <div class="footer__logo">BML</div>
+        <img src="logo.png" alt="BML – Business Mindset Limited" class="footer__logo-img" />
         <p class="footer__tagline">Structure. Visibility. Growth.</p>
         <p class="footer__desc">Business Mindset Limited — all-in-one business support for companies across Jamaica and the Caribbean.</p>
         <div class="footer__social" aria-label="Social links">
@@ -361,12 +350,12 @@
       <div class="footer__col">
         <h4 class="footer__col-title">Services</h4>
         <ul class="footer__links">
-          <li><a href="index.html#services" class="footer__link">Business Consultancy</a></li>
-          <li><a href="index.html#services" class="footer__link">Accounting</a></li>
-          <li><a href="index.html#services" class="footer__link">Bookkeeping</a></li>
-          <li><a href="index.html#services" class="footer__link">POS Solutions</a></li>
-          <li><a href="index.html#services" class="footer__link">Website Creation</a></li>
-          <li><a href="index.html#services" class="footer__link">Marketing Strategy</a></li>
+          <li><a href="services.html#business-consultancy" class="footer__link">Business Consultancy</a></li>
+          <li><a href="services.html#accounting"           class="footer__link">Accounting</a></li>
+          <li><a href="services.html#bookkeeping"          class="footer__link">Bookkeeping</a></li>
+          <li><a href="services.html#pos-solutions"        class="footer__link">POS Solutions</a></li>
+          <li><a href="services.html#website-creation"     class="footer__link">Website Creation</a></li>
+          <li><a href="services.html#marketing-strategy"   class="footer__link">Marketing Strategy</a></li>
         </ul>
       </div>
 
@@ -376,7 +365,7 @@
           <li><a href="about.html"          class="footer__link">About BML</a></li>
           <li><a href="index.html#story"    class="footer__link">Our Process</a></li>
           <li><a href="index.html#why-bml"  class="footer__link">Why BML</a></li>
-          <li><a href="index.html#contact"  class="footer__link">Contact</a></li>
+          <li><a href="contact.html"  class="footer__link">Contact</a></li>
         </ul>
       </div>
 
@@ -421,6 +410,6 @@
   <!-- GSAP + ScrollTrigger from CDN (no Matter.js needed on this page) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script src="app.js?v=20"></script>
+  <script src="app.js?v=24"></script>
 </body>
 </html>

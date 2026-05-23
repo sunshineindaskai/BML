@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="BML Services — business consultancy, accounting, bookkeeping, POS solutions, website creation, and marketing strategy for MSMEs across Jamaica and the Caribbean." />
+  <title>Services | BML – Business Mindset Limited</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap" rel="stylesheet" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="canonical" href="https://businessmindsetjm.com/services" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://businessmindsetjm.com/services" />
+  <meta property="og:title" content="Services | BML – Business Mindset Limited" />
+  <meta property="og:description" content="Six integrated business services from one partner — consultancy, accounting, bookkeeping, POS systems, website creation, and marketing strategy." />
+  <meta property="og:image" content="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Services | BML – Business Mindset Limited" />
+  <meta name="twitter:description" content="Six integrated services from one partner — helping MSMEs grow with clarity." />
+  <meta name="twitter:image" content="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80" />
+  <link rel="stylesheet" href="styles.css?v=13" />
+</head>
+<body data-page="services">
+
+  <!-- ── SEAMLESS PAGE BACKGROUND ──────────────────────────────────────────────
+       Same fixed layer as homepage — one unified visual world
+  ─────────────────────────────────────────────────────────────────────────── -->
+  <div class="page-bg" aria-hidden="true">
+    <div class="page-bg__glow page-bg__glow--1"></div>
+    <div class="page-bg__glow page-bg__glow--2"></div>
+    <div class="page-bg__glow page-bg__glow--3"></div>
+    <div class="page-bg__glow page-bg__glow--4"></div>
+    <div class="page-bg__grid"></div>
+    <div class="page-bg__noise"></div>
+  </div>
+
+  <!-- ── NAVIGATION ──────────────────────────────────────────────────────────── -->
+  <header class="nav" id="nav">
+    <div class="nav__inner container">
+      <a href="index.html" class="nav__logo" aria-label="BML Home">
+        <img src="logo.png" alt="BML – Business Mindset Limited" class="nav__logo-img" />
+      </a>
+
+      <nav class="nav__links" aria-label="Main navigation">
+        <a href="index.html"         class="nav__link">Home</a>
+        <a href="about.html"         class="nav__link">About</a>
+        <a href="services.html"      class="nav__link nav__link--active" aria-current="page">Services</a>
+        <a href="index.html#story"   class="nav__link">Process</a>
+        <a href="contact.html" class="nav__link">Contact</a>
+      </nav>
+
+      <a href="https://calendly.com/businessmindsetjm/consultation"
+         target="_blank" rel="noopener noreferrer"
+         class="btn btn--primary nav__cta">Book a Consultation</a>
+
+      <button class="nav__hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+    <div class="nav__mobile" id="mobileMenu" aria-hidden="true">
+      <a href="index.html"         class="nav__mobile-link">Home</a>
+      <a href="about.html"         class="nav__mobile-link">About</a>
+      <a href="services.html"      class="nav__mobile-link nav__mobile-link--active">Services</a>
+      <a href="index.html#story"   class="nav__mobile-link">Process</a>
+      <a href="contact.html" class="nav__mobile-link">Contact</a>
+      <a href="https://calendly.com/businessmindsetjm/consultation"
+         target="_blank" rel="noopener noreferrer"
+         class="btn btn--primary nav__mobile-cta">Book a Consultation</a>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ── 1. SERVICES HERO ──────────────────────────────────────────────────── -->
+    <section class="sv-hero" id="sv-hero" aria-label="Services">
+      <div class="sv-hero__layout container">
+
+        <!-- Left: text -->
+        <div class="sv-hero__text">
+          <h1 class="sv-hero__headline" id="svHeadline">
+            <span class="h-line" data-line="0">Business Support</span>
+            <span class="h-line" data-line="1">Built Around</span>
+            <span class="h-line h-line--em" data-line="2"><em>Growth.</em></span>
+          </h1>
+
+          <p class="hero__sub" id="svSub">
+            From strategy and finances to systems, websites, and marketing,
+            BML helps MSMEs build the structure needed to operate better
+            and grow with clarity.
+          </p>
+
+          <div class="hero__actions" id="svActions">
+            <a href="https://calendly.com/businessmindsetjm/consultation"
+               target="_blank" rel="noopener noreferrer"
+               class="btn btn--primary btn--lg">Book a Consultation</a>
+            <a href="#svc-grid" class="btn btn--ghost btn--lg">Explore Services</a>
+          </div>
+
+          <div class="hero__scroll-ind" aria-hidden="true" id="svScrollInd">
+            <span class="hero__scroll-dot"></span>
+            <span class="hero__scroll-txt">Scroll to explore</span>
+          </div>
+        </div>
+
+        <!-- Right: word cloud visual (same as home hero) -->
+        <div class="sv-hero__visual" id="svVisual" aria-hidden="true">
+          <div class="word-cloud" id="svWordCloud"></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── 2. PHILOSOPHY ─────────────────────────────────────────────────────── -->
+    <section class="section sv-philosophy" id="sv-philosophy" aria-label="Our approach">
+      <div class="container sv-philosophy__inner">
+
+        <div class="sv-philosophy__text">
+          <p class="section__label">Our Approach</p>
+          <h2 class="section__heading sv-philosophy__heading">
+            Not separate services.<br>
+            <em>One connected support system.</em>
+          </h2>
+        </div>
+
+        <div class="sv-philosophy__body">
+          <p class="sv-phil-copy">
+            Your business does not grow through one isolated fix. It grows when
+            the numbers are clearer, the systems are stronger, the brand is more
+            visible, and the strategy connects it all.
+          </p>
+          <p class="sv-phil-copy">
+            BML brings these pieces into
+            <span class="sv-hl-phrase">one coordinated support system</span>
+            — designed specifically for MSMEs.
+          </p>
+          <div class="sv-phil-tags" aria-label="Service areas">
+            <span class="sv-tag">Finance</span>
+            <span class="sv-tag-sep" aria-hidden="true">+</span>
+            <span class="sv-tag">Systems</span>
+            <span class="sv-tag-sep" aria-hidden="true">+</span>
+            <span class="sv-tag">Digital</span>
+            <span class="sv-tag-sep" aria-hidden="true">+</span>
+            <span class="sv-tag">Strategy</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── 3. SERVICES GRID ──────────────────────────────────────────────────── -->
+    <section class="section sv-services" id="svc-grid" aria-label="What We Help With">
+      <div class="container">
+
+        <div class="sv-services__hd">
+          <p class="section__label">What We Help With</p>
+          <h2 class="section__heading">
+            Six ways BML supports<br>
+            <em>your business.</em>
+          </h2>
+        </div>
+
+        <div class="sv-svc-grid">
+
+          <!-- 01 Business Consultancy -->
+          <article class="sv-svc-card" id="business-consultancy">
+            <div class="sv-svc-card__num" aria-hidden="true">01</div>
+            <div class="sv-svc-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="22" height="22"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+            </div>
+            <h3 class="sv-svc-card__name">Business Consultancy</h3>
+            <p class="sv-svc-card__desc">Practical strategy and guidance to help business owners make better decisions, improve operations, and plan for growth.</p>
+            <ul class="sv-svc-card__list">
+              <li>Business planning</li>
+              <li>Operational review</li>
+              <li>Growth strategy</li>
+              <li>Process improvement</li>
+              <li>Decision support</li>
+            </ul>
+            <a href="https://calendly.com/businessmindsetjm/consultation"
+               target="_blank" rel="noopener noreferrer"
+               class="sv-svc-card__cta">
+              Book a Consultation
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" width="11" height="11" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+            </a>
+          </article>
+
+          <!-- 02 Accounting -->
+          <article class="sv-svc-card" id="accounting">
+            <div class="sv-svc-card__num" aria-hidden="true">02</div>
+            <div class="sv-svc-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="22" height="22"><path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+            <h3 class="sv-svc-card__name">Accounting</h3>
+            <p class="sv-svc-card__desc">Clear financial support that helps businesses understand performance, manage obligations, and operate with better financial control.</p>
+            <ul class="sv-svc-card__list">
+              <li>Financial reporting</li>
+              <li>Compliance support</li>
+              <li>Business performance review</li>
+              <li>Financial organization</li>
+              <li>Accounting systems</li>
+            </ul>
+            <a href="https://calendly.com/businessmindsetjm/consultation"
+               target="_blank" rel="noopener noreferrer"
+               class="sv-svc-card__cta">
+              Book a Consultation
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" width="11" height="11" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+            </a>
+          </article>
+
+          <!-- 03 Bookkeeping -->
+          <article class="sv-svc-card" id="bookkeeping">
+            <div class="sv-svc-card__num" aria-hidden="true">03</div>
+            <div class="sv-svc-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="22" height="22"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+            </div>
+            <h3 class="sv-svc-card__name">Bookkeeping</h3>
+            <p class="sv-svc-card__desc">Organized records that help business owners stay on top of transactions, cash flow, and day-to-day financial activity.</p>
+            <ul class="sv-svc-card__list">
+              <li>Transaction tracking</li>
+              <li>Monthly recordkeeping</li>
+              <li>Expense organization</li>
+              <li>Reconciliation support</li>
+              <li>Clean financial records</li>
+            </ul>
+            <a href="https://calendly.com/businessmindsetjm/consultation"
+               target="_blank" rel="noopener noreferrer"
+               class="sv-svc-card__cta">
+              Book a Consultation
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" width="11" height="11" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+            </a>
+          </article>
+
+          <!-- 04 POS Solutions -->
+          <article class="sv-svc-card" id="pos-solutions">
+            <div class="sv-svc-card__num" aria-hidden="true">04</div>
+            <div class="sv-svc-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="22" height="22"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+            </div>
+            <h3 class="sv-svc-card__name">POS Solutions</h3>
+            <p class="sv-svc-card__desc">Smarter sales and operations systems that help businesses track activity, manage transactions, and improve efficiency.</p>
+            <ul class="sv-svc-card__list">
+              <li>POS setup</li>
+              <li>Sales tracking</li>
+              <li>Inventory visibility</li>
+              <li>System guidance</li>
+              <li>Operational efficiency</li>
+            </ul>
+            <a href="https://calendly.com/businessmindsetjm/consultation"
+               target="_blank" rel="noopener noreferrer"
+               class="sv-svc-card__cta">
+              Book a Consultation
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" width="11" height="11" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+            </a>
+          </article>
+
+          <!-- 05 Website Creation -->
+          <article class="sv-svc-card" id="website-creation">
+            <div class="sv-svc-card__num" aria-hidden="true">05</div>
+            <div class="sv-svc-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="22" height="22"><path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+            </div>
+            <h3 class="sv-svc-card__name">Website Creation</h3>
+            <p class="sv-svc-card__desc">Modern websites that help businesses look credible, communicate clearly, and create a stronger digital presence.</p>
+            <ul class="sv-svc-card__list">
+              <li>Business websites</li>
+              <li>Landing pages</li>
+              <li>Service pages</li>
+              <li>Responsive design</li>
+              <li>Website structure and messaging</li>
+            </ul>
+            <a href="https://calendly.com/businessmindsetjm/consultation"
+               target="_blank" rel="noopener noreferrer"
+               class="sv-svc-card__cta">
+              Book a Consultation
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" width="11" height="11" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+            </a>
+          </article>
+
+          <!-- 06 Marketing Strategy -->
+          <article class="sv-svc-card" id="marketing-strategy">
+            <div class="sv-svc-card__num" aria-hidden="true">06</div>
+            <div class="sv-svc-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="22" height="22"><path d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"/></svg>
+            </div>
+            <h3 class="sv-svc-card__name">Marketing Strategy</h3>
+            <p class="sv-svc-card__desc">Clearer messaging and marketing direction to help businesses improve visibility, reach the right audience, and show up more consistently.</p>
+            <ul class="sv-svc-card__list">
+              <li>Brand messaging</li>
+              <li>Campaign direction</li>
+              <li>Content planning</li>
+              <li>Digital marketing guidance</li>
+              <li>Visibility strategy</li>
+            </ul>
+            <a href="https://calendly.com/businessmindsetjm/consultation"
+               target="_blank" rel="noopener noreferrer"
+               class="sv-svc-card__cta">
+              Book a Consultation
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" width="11" height="11" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+            </a>
+          </article>
+
+        </div><!-- /.sv-svc-grid -->
+
+        <div class="sv-services__foot">
+          <a href="https://calendly.com/businessmindsetjm/consultation"
+             target="_blank" rel="noopener noreferrer"
+             class="btn btn--primary btn--lg">Book a Consultation</a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── 4. CLIENT EXPERIENCE ──────────────────────────────────────────────── -->
+    <section class="section sv-experience" id="sv-experience" aria-label="Working with BML">
+      <div class="container">
+
+        <div class="sv-experience__hd">
+          <p class="section__label">The Experience</p>
+          <h2 class="section__heading">
+            What it feels like<br>
+            <em>to work with BML.</em>
+          </h2>
+          <p class="sv-experience__intro">
+            Working with BML is designed to feel clear, structured, and practical.
+            We start by understanding where your business is now, then identify
+            what needs to be strengthened so you can move forward with more confidence.
+          </p>
+        </div>
+
+        <div class="sv-exp-grid">
+
+          <div class="sv-exp-step">
+            <span class="sv-exp-step__num" aria-hidden="true">01</span>
+            <div class="sv-exp-step__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20" height="20"><path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+            </div>
+            <h3 class="sv-exp-step__title">Clear conversations</h3>
+            <p class="sv-exp-step__desc">We start by understanding your business — not pitching services before we know what you actually need.</p>
+          </div>
+
+          <div class="sv-exp-step">
+            <span class="sv-exp-step__num" aria-hidden="true">02</span>
+            <div class="sv-exp-step__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20" height="20"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+            <h3 class="sv-exp-step__title">Practical recommendations</h3>
+            <p class="sv-exp-step__desc">Advice tailored to where your business is now — not generic frameworks designed for someone else.</p>
+          </div>
+
+          <div class="sv-exp-step">
+            <span class="sv-exp-step__num" aria-hidden="true">03</span>
+            <div class="sv-exp-step__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20" height="20"><path d="M4 6h16M4 10h16M4 14h8M4 18h8"/></svg>
+            </div>
+            <h3 class="sv-exp-step__title">Organized implementation</h3>
+            <p class="sv-exp-step__desc">Systems, records, and setups delivered in a structured way — so the work actually sticks.</p>
+          </div>
+
+          <div class="sv-exp-step">
+            <span class="sv-exp-step__num" aria-hidden="true">04</span>
+            <div class="sv-exp-step__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20" height="20"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+            </div>
+            <h3 class="sv-exp-step__title">Professional communication</h3>
+            <p class="sv-exp-step__desc">Consistent, responsive, and clear — so you always know where things stand.</p>
+          </div>
+
+          <div class="sv-exp-step">
+            <span class="sv-exp-step__num" aria-hidden="true">05</span>
+            <div class="sv-exp-step__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20" height="20"><path d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+            </div>
+            <h3 class="sv-exp-step__title">Connected support</h3>
+            <p class="sv-exp-step__desc">Strategy, systems, and execution aligned — so no part of your business is left working in isolation.</p>
+          </div>
+
+        </div><!-- /.sv-exp-grid -->
+      </div>
+    </section>
+
+    <!-- ── 5. QUALITY / DIFFERENCE ───────────────────────────────────────────── -->
+    <section class="section sv-quality" id="sv-quality" aria-label="Built for MSMEs">
+      <div class="container">
+
+        <div class="sv-quality__hd">
+          <p class="section__label">Built Different</p>
+          <h2 class="section__heading">
+            Built for MSMEs that<br>
+            <em>need more than advice.</em>
+          </h2>
+          <p class="sv-quality__intro">
+            BML combines strategic thinking with practical execution. That means the
+            support is not just about ideas — it's about helping your business become
+            clearer, more organized, and better prepared for growth.
+          </p>
+        </div>
+
+        <div class="sv-pillars">
+
+          <div class="sv-pillar">
+            <div class="sv-pillar__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="22" height="22"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            </div>
+            <h3 class="sv-pillar__name">Practical</h3>
+            <p class="sv-pillar__desc">Support designed around <em class="sv-em">real business needs</em>, not generic theory that needs to be adapted before it applies.</p>
+          </div>
+
+          <div class="sv-pillar">
+            <div class="sv-pillar__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="22" height="22"><path d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+            </div>
+            <h3 class="sv-pillar__name">Connected</h3>
+            <p class="sv-pillar__desc">Services that work together across <em class="sv-em">finance, systems, marketing, and strategy</em> — under one coordinated partner.</p>
+          </div>
+
+          <div class="sv-pillar">
+            <div class="sv-pillar__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="22" height="22"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            </div>
+            <h3 class="sv-pillar__name">Growth-Focused</h3>
+            <p class="sv-pillar__desc">Every recommendation is shaped around helping your business <em class="sv-em">move forward</em> — not just maintain where it is now.</p>
+          </div>
+
+        </div><!-- /.sv-pillars -->
+      </div>
+    </section>
+
+    <!-- ── 6. PATHWAY / HOW TO START ────────────────────────────────────────── -->
+    <section class="section sv-pathway" id="sv-pathway" aria-label="How to start">
+      <div class="container">
+
+        <div class="sv-pathway__hd">
+          <p class="section__label">How to Start</p>
+          <h2 class="section__heading">
+            Start with the right<br>
+            <em>conversation.</em>
+          </h2>
+        </div>
+
+        <div class="sv-steps">
+
+          <div class="sv-step">
+            <div class="sv-step__num" aria-hidden="true">01</div>
+            <h3 class="sv-step__title">Book a Consultation</h3>
+            <p class="sv-step__desc">Schedule a call with the BML team to open the conversation about where your business is now.</p>
+          </div>
+
+          <div class="sv-step__connector" aria-hidden="true"></div>
+
+          <div class="sv-step">
+            <div class="sv-step__num" aria-hidden="true">02</div>
+            <h3 class="sv-step__title">Review Your Business Needs</h3>
+            <p class="sv-step__desc">Together, we look at your operations, finances, systems, and goals to understand what needs attention.</p>
+          </div>
+
+          <div class="sv-step__connector" aria-hidden="true"></div>
+
+          <div class="sv-step">
+            <div class="sv-step__num" aria-hidden="true">03</div>
+            <h3 class="sv-step__title">Identify the Right Support</h3>
+            <p class="sv-step__desc">We identify which services are most relevant to where your business is and where it needs to go.</p>
+          </div>
+
+          <div class="sv-step__connector" aria-hidden="true"></div>
+
+          <div class="sv-step">
+            <div class="sv-step__num" aria-hidden="true">04</div>
+            <h3 class="sv-step__title">Build With BML</h3>
+            <p class="sv-step__desc">We move into structured support — building, implementing, and staying involved from start through to results.</p>
+          </div>
+
+        </div><!-- /.sv-steps -->
+
+        <div class="sv-pathway__cta">
+          <a href="https://calendly.com/businessmindsetjm/consultation"
+             target="_blank" rel="noopener noreferrer"
+             class="btn btn--primary btn--lg">Book a Consultation</a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── 7. FINAL CTA ──────────────────────────────────────────────────────── -->
+    <section class="cta-final" id="contact" aria-label="Get Started">
+      <div class="cta-final__bg" aria-hidden="true">
+        <div class="cta-final__glow"></div>
+        <div class="cta-final__grid"></div>
+      </div>
+      <div class="container cta-final__inner">
+        <p class="section__label cta-final__label">Get Started</p>
+        <h2 class="cta-final__headline">
+          Ready to move your<br><em>business forward?</em>
+        </h2>
+        <p class="cta-final__sub">
+          Start with a conversation about where your business is now —
+          and which support can help you move forward.
+        </p>
+        <a href="https://calendly.com/businessmindsetjm/consultation"
+           target="_blank" rel="noopener noreferrer"
+           class="btn btn--primary btn--lg cta-final__btn">Let's Talk</a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── FOOTER ──────────────────────────────────────────────────────────────── -->
+  <footer class="footer" aria-label="Footer">
+    <div class="container footer__inner">
+
+      <div class="footer__brand">
+        <img src="logo.png" alt="BML – Business Mindset Limited" class="footer__logo-img" />
+        <p class="footer__tagline">Structure. Visibility. Growth.</p>
+        <p class="footer__desc">Business Mindset Limited — all-in-one business support for companies across Jamaica and the Caribbean.</p>
+        <div class="footer__social" aria-label="Social links">
+          <a href="https://www.instagram.com/businessmindsetjm"
+             target="_blank" rel="noopener noreferrer"
+             class="footer__social-link" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+          </a>
+          <a href="https://x.com/businessmindsetjm"
+             target="_blank" rel="noopener noreferrer"
+             class="footer__social-link" aria-label="X / Twitter">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="footer__col">
+        <h4 class="footer__col-title">Services</h4>
+        <ul class="footer__links">
+          <li><a href="#business-consultancy" class="footer__link">Business Consultancy</a></li>
+          <li><a href="#accounting"           class="footer__link">Accounting</a></li>
+          <li><a href="#bookkeeping"          class="footer__link">Bookkeeping</a></li>
+          <li><a href="#pos-solutions"        class="footer__link">POS Solutions</a></li>
+          <li><a href="#website-creation"     class="footer__link">Website Creation</a></li>
+          <li><a href="#marketing-strategy"   class="footer__link">Marketing Strategy</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__col">
+        <h4 class="footer__col-title">Company</h4>
+        <ul class="footer__links">
+          <li><a href="about.html"          class="footer__link">About BML</a></li>
+          <li><a href="index.html#story"    class="footer__link">Our Process</a></li>
+          <li><a href="index.html#why-bml"  class="footer__link">Why BML</a></li>
+          <li><a href="contact.html"  class="footer__link">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__col">
+        <h4 class="footer__col-title">Contact</h4>
+        <ul class="footer__links">
+          <li>
+            <a href="mailto:info@businessmindsetjm.com" class="footer__link">
+              info@businessmindsetjm.com
+            </a>
+          </li>
+          <li>
+            <a href="tel:+18762339715" class="footer__link">
+              +1 (876) 233-9715
+            </a>
+          </li>
+          <li>
+            <a href="https://www.instagram.com/businessmindsetjm"
+               target="_blank" rel="noopener noreferrer"
+               class="footer__link">Instagram</a>
+          </li>
+          <li>
+            <a href="https://x.com/businessmindsetjm"
+               target="_blank" rel="noopener noreferrer"
+               class="footer__link">X / Twitter</a>
+          </li>
+        </ul>
+        <a href="https://calendly.com/businessmindsetjm/consultation"
+           target="_blank" rel="noopener noreferrer"
+           class="btn btn--primary footer__cta">Book a Consultation</a>
+      </div>
+
+    </div>
+
+    <div class="footer__bottom">
+      <div class="container footer__bottom-inner">
+        <p class="footer__copy">&copy; <span id="year"></span> Business Mindset Limited. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Matter.js physics (word cloud) + GSAP + ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="app.js?v=24"></script>
+</body>
+</html>
